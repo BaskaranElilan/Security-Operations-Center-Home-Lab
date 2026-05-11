@@ -1,0 +1,79 @@
+# MISP Docker Compose
+# SOC Home Lab — Threat Intelligence Platform
+#
+# Deploy: docker-compose up -d
+# Access: https://localhost (or VM IP)
+# Default login: admin@admin.test / admin
+
+version: "3.8"
+
+services:
+  misp-core:
+    image: ghcr.io/misp/misp-docker/misp-core:latest
+    container_name: misp-core
+    restart: unless-stopped
+    ports:
+      - "443:443"
+      - "80:80"
+    environment:
+      - MYSQL_HOST=misp-db
+      - MYSQL_DATABASE=misp
+      - MYSQL_USER=misp
+      - MYSQL_PASSWORD=misp_db_password_change_me
+      - MISP_ADMIN_EMAIL=admin@admin.test
+      - MISP_ADMIN_PASSPHRASE=admin
+      - MISP_BASEURL=https://localhost
+      - REDIS_HOST=misp-redis
+    volumes:
+      - misp-core-data:/var/www/MISP/app/files
+      - misp-core-config:/var/www/MISP/app/Config
+      - misp-core-certs:/etc/nginx/certs
+      - misp-core-logs:/var/www/MISP/app/tmp/logs
+    depends_on:
+      - misp-db
+      - misp-redis
+    networks:
+      - misp-network
+
+  misp-db:
+    image: mysql:8.0
+    container_name: misp-db
+    restart: unless-stopped
+    environment:
+      - MYSQL_DATABASE=misp
+      - MYSQL_USER=misp
+      - MYSQL_PASSWORD=misp_db_password_change_me
+      - MYSQL_ROOT_PASSWORD=root_password_change_me
+    volumes:
+      - misp-db-data:/var/lib/mysql
+    networks:
+      - misp-network
+
+  misp-redis:
+    image: redis:7-alpine
+    container_name: misp-redis
+    restart: unless-stopped
+    networks:
+      - misp-network
+
+  misp-modules:
+    image: ghcr.io/misp/misp-docker/misp-modules:latest
+    container_name: misp-modules
+    restart: unless-stopped
+    environment:
+      - REDIS_BACKEND=misp-redis
+    depends_on:
+      - misp-redis
+    networks:
+      - misp-network
+
+volumes:
+  misp-core-data:
+  misp-core-config:
+  misp-core-certs:
+  misp-core-logs:
+  misp-db-data:
+
+networks:
+  misp-network:
+    driver: bridge

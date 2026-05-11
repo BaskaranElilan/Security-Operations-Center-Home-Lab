@@ -1,0 +1,72 @@
+# The Hive Docker Compose
+# SOC Home Lab — Incident Response Platform
+#
+# Deploy: docker-compose up -d
+# Access: http://localhost:9000
+# Default login: admin@thehive.local / secret
+
+version: "3.8"
+
+services:
+  thehive:
+    image: strangebee/thehive:5
+    container_name: thehive
+    restart: unless-stopped
+    ports:
+      - "9000:9000"
+    environment:
+      - JVM_OPTS=-Xms512m -Xmx1024m
+    volumes:
+      - thehive-data:/opt/thp/thehive/data
+      - thehive-index:/opt/thp/thehive/index
+    depends_on:
+      - thehive-elasticsearch
+      - thehive-cassandra
+    command:
+      - --secret
+      - "change_me_to_a_random_secret"
+      - "--cql-hostnames"
+      - "thehive-cassandra"
+      - "--index-backend"
+      - "elasticsearch"
+      - "--es-hostnames"
+      - "thehive-elasticsearch"
+    networks:
+      - thehive-network
+
+  thehive-elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.12
+    container_name: thehive-elasticsearch
+    restart: unless-stopped
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - cluster.name=thehive
+    volumes:
+      - thehive-es-data:/usr/share/elasticsearch/data
+    networks:
+      - thehive-network
+
+  thehive-cassandra:
+    image: cassandra:4.1
+    container_name: thehive-cassandra
+    restart: unless-stopped
+    environment:
+      - CASSANDRA_CLUSTER_NAME=thehive
+      - MAX_HEAP_SIZE=512M
+      - HEAP_NEWSIZE=128M
+    volumes:
+      - thehive-cassandra-data:/var/lib/cassandra
+    networks:
+      - thehive-network
+
+volumes:
+  thehive-data:
+  thehive-index:
+  thehive-es-data:
+  thehive-cassandra-data:
+
+networks:
+  thehive-network:
+    driver: bridge

@@ -1,0 +1,20 @@
+# Grafana Dashboard Provisioning
+# SOC Home Lab
+#
+# Location: /etc/grafana/provisioning/dashboards/dashboards.yml
+# This tells Grafana to auto-load dashboards from a directory.
+
+apiVersion: 1
+
+providers:
+  - name: "SOC Home Lab Dashboards"
+    orgId: 1
+    folder: "SOC Home Lab"
+    type: file
+    disableDeletion: false
+    editable: true
+    updateIntervalSeconds: 30
+    allowUiUpdates: true
+    options:
+      path: /var/lib/grafana/dashboards
+      foldersFromFilesStructure: false

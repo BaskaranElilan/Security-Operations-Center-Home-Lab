@@ -1,0 +1,164 @@
+{
+  "description": "SOC Home Lab — Network Security Group Rules Reference",
+  "networkSecurityGroups": [
+    {
+      "name": "security-tools-nsg",
+      "associatedSubnet": "security-tools-subnet (10.0.1.0/24)",
+      "rules": [
+        {
+          "name": "AllowSSH",
+          "priority": 100,
+          "direction": "Inbound",
+          "access": "Allow",
+          "protocol": "TCP",
+          "sourceAddress": "<YOUR_PUBLIC_IP>/32",
+          "destinationPort": "22",
+          "description": "Allow SSH from admin IP only"
+        },
+        {
+          "name": "AllowWazuhDashboard",
+          "priority": 110,
+          "direction": "Inbound",
+          "access": "Allow",
+          "protocol": "TCP",
+          "sourceAddress": "<YOUR_PUBLIC_IP>/32",
+          "destinationPort": "443",
+          "description": "Wazuh Dashboard access"
+        },
+        {
+          "name": "AllowWazuhAgents",
+          "priority": 120,
+          "direction": "Inbound",
+          "access": "Allow",
+          "protocol": "TCP",
+          "sourceAddress": "10.0.0.0/16",
+          "destinationPort": "1514-1515",
+          "description": "Wazuh agent communication from all subnets"
+        },
+        {
+          "name": "AllowGrafana",
+          "priority": 130,
+          "direction": "Inbound",
+          "access": "Allow",
+          "protocol": "TCP",
+          "sourceAddress": "<YOUR_PUBLIC_IP>/32",
+          "destinationPort": "3000",
+          "description": "Grafana dashboard access"
+        },
+        {
+          "name": "AllowTheHive",
+          "priority": 140,
+          "direction": "Inbound",
+          "access": "Allow",
+          "protocol": "TCP",
+          "sourceAddress": "<YOUR_PUBLIC_IP>/32",
+          "destinationPort": "9000",
+          "description": "The Hive web interface"
+        },
+        {
+          "name": "AllowDFIR_IRIS",
+          "priority": 150,
+          "direction": "Inbound",
+          "access": "Allow",
+          "protocol": "TCP",
+          "sourceAddress": "<YOUR_PUBLIC_IP>/32",
+          "destinationPort": "8443",
+          "description": "DFIR-IRIS web interface"
+        },
+        {
+          "name": "AllowShuffle",
+          "priority": 160,
+          "direction": "Inbound",
+          "access": "Allow",
+          "protocol": "TCP",
+          "sourceAddress": "<YOUR_PUBLIC_IP>/32",
+          "destinationPort": "3001",
+          "description": "Shuffle SOAR web interface"
+        },
+        {
+          "name": "AllowInternalTraffic",
+          "priority": 200,
+          "direction": "Inbound",
+          "access": "Allow",
+          "protocol": "*",
+          "sourceAddress": "10.0.1.0/24",
+          "destinationPort": "*",
+          "description": "Allow all internal security tools subnet traffic"
+        }
+      ]
+    },
+    {
+      "name": "endpoints-nsg",
+      "associatedSubnet": "endpoints-subnet (10.0.2.0/24)",
+      "rules": [
+        {
+          "name": "AllowSSH",
+          "priority": 100,
+          "direction": "Inbound",
+          "access": "Allow",
+          "protocol": "TCP",
+          "sourceAddress": "<YOUR_PUBLIC_IP>/32",
+          "destinationPort": "22",
+          "description": "SSH access for admin"
+        },
+        {
+          "name": "AllowRDP",
+          "priority": 110,
+          "direction": "Inbound",
+          "access": "Allow",
+          "protocol": "TCP",
+          "sourceAddress": "<YOUR_PUBLIC_IP>/32",
+          "destinationPort": "3389",
+          "description": "RDP for Windows endpoint"
+        },
+        {
+          "name": "AllowAttackSubnet",
+          "priority": 200,
+          "direction": "Inbound",
+          "access": "Allow",
+          "protocol": "*",
+          "sourceAddress": "10.0.3.0/24",
+          "destinationPort": "*",
+          "description": "Allow attack traffic from Kali for testing"
+        },
+        {
+          "name": "AllowNodeExporter",
+          "priority": 210,
+          "direction": "Inbound",
+          "access": "Allow",
+          "protocol": "TCP",
+          "sourceAddress": "10.0.1.0/24",
+          "destinationPort": "9100",
+          "description": "Prometheus node exporter scraping"
+        }
+      ]
+    },
+    {
+      "name": "attack-nsg",
+      "associatedSubnet": "attack-subnet (10.0.3.0/24)",
+      "rules": [
+        {
+          "name": "AllowSSH",
+          "priority": 100,
+          "direction": "Inbound",
+          "access": "Allow",
+          "protocol": "TCP",
+          "sourceAddress": "<YOUR_PUBLIC_IP>/32",
+          "destinationPort": "22",
+          "description": "SSH access for admin"
+        },
+        {
+          "name": "DenyToSecurityTools",
+          "priority": 200,
+          "direction": "Outbound",
+          "access": "Deny",
+          "protocol": "*",
+          "sourceAddress": "10.0.3.0/24",
+          "destinationAddress": "10.0.1.0/24",
+          "destinationPort": "*",
+          "description": "Block direct attack traffic to security tools"
+        }
+      ]
+    }
+  ]
+}

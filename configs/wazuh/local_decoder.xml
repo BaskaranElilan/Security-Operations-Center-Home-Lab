@@ -1,0 +1,45 @@
+<!--
+  Custom Wazuh Decoder for Suricata NIDS Alerts
+  SOC Home Lab
+  
+  Location: /var/ossec/etc/decoders/local_decoder.xml (Wazuh Server)
+  
+  This decoder tells Wazuh how to parse Suricata's JSON alerts
+  from the eve.json log file. It extracts key fields for 
+  correlation with endpoint security events.
+-->
+
+<!-- Parent decoder for Suricata JSON logs -->
+<decoder name="suricata">
+  <prematch>^{"timestamp"</prematch>
+  <plugin_decoder>JSON_Decoder</plugin_decoder>
+</decoder>
+
+<!-- Child decoder to extract alert-specific fields -->
+<decoder name="suricata-alert">
+  <parent>suricata</parent>
+  <prematch>\"event_type\":\"alert\"</prematch>
+  <plugin_decoder>JSON_Decoder</plugin_decoder>
+  <order>timestamp,flow_id,event_type,src_ip,src_port,dest_ip,dest_port,proto,alert.signature_id,alert.signature,alert.category,alert.severity</order>
+</decoder>
+
+<!-- Decoder for Suricata flow events -->
+<decoder name="suricata-flow">
+  <parent>suricata</parent>
+  <prematch>\"event_type\":\"flow\"</prematch>
+  <plugin_decoder>JSON_Decoder</plugin_decoder>
+</decoder>
+
+<!-- Decoder for Suricata DNS events -->
+<decoder name="suricata-dns">
+  <parent>suricata</parent>
+  <prematch>\"event_type\":\"dns\"</prematch>
+  <plugin_decoder>JSON_Decoder</plugin_decoder>
+</decoder>
+
+<!-- Decoder for Suricata HTTP events -->
+<decoder name="suricata-http">
+  <parent>suricata</parent>
+  <prematch>\"event_type\":\"http\"</prematch>
+  <plugin_decoder>JSON_Decoder</plugin_decoder>
+</decoder>

@@ -1,0 +1,11 @@
+# This file keeps the screenshots directory in git
+# Add your dashboard screenshots here:
+#
+# - wazuh-dashboard.png
+# - grafana-metrics.png
+# - thehive-cases.png
+# - misp-iocs.png
+# - shuffle-workflows.png
+# - dfir-iris-case.png
+# - slack-notification.png
+# - attack-detection.png

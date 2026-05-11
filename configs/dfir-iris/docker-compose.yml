@@ -1,0 +1,87 @@
+# DFIR-IRIS Docker Compose
+# SOC Home Lab — Digital Forensics & Incident Response Platform
+#
+# Deploy: docker-compose up -d
+# Access: https://localhost:8443
+# Default login: administrator / administrator
+
+version: "3.8"
+
+services:
+  iriswebapp:
+    image: ghcr.io/dfir-iris/iriswebapp_app:latest
+    container_name: iriswebapp_app
+    restart: unless-stopped
+    ports:
+      - "8443:8443"
+    environment:
+      - IRIS_SECRET_KEY=change_me_to_random_secret_key
+      - IRIS_SECURITY_PASSWORD_SALT=change_me_to_random_salt
+      - POSTGRES_HOST=iris-db
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=iris_db
+      - POSTGRES_USER=iris
+      - POSTGRES_PASSWORD=iris_db_password_change_me
+      - IRIS_UPSTREAM_SERVER=app
+      - IRIS_UPSTREAM_PORT=8000
+      - IRIS_AUTHENTICATION_TYPE=local
+      - CELERY_BROKER=amqp://iris:iris_rabbitmq_password@iris-rabbitmq:5672
+    volumes:
+      - iris-app-data:/home/iris/server_data
+      - iris-certificates:/home/iris/certificates
+    depends_on:
+      - iris-db
+      - iris-rabbitmq
+    networks:
+      - iris-network
+
+  iris-db:
+    image: postgres:15-alpine
+    container_name: iris-db
+    restart: unless-stopped
+    environment:
+      - POSTGRES_DB=iris_db
+      - POSTGRES_USER=iris
+      - POSTGRES_PASSWORD=iris_db_password_change_me
+    volumes:
+      - iris-db-data:/var/lib/postgresql/data
+    networks:
+      - iris-network
+
+  iris-rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: iris-rabbitmq
+    restart: unless-stopped
+    environment:
+      - RABBITMQ_DEFAULT_USER=iris
+      - RABBITMQ_DEFAULT_PASS=iris_rabbitmq_password
+    networks:
+      - iris-network
+
+  iris-worker:
+    image: ghcr.io/dfir-iris/iriswebapp_worker:latest
+    container_name: iriswebapp_worker
+    restart: unless-stopped
+    environment:
+      - POSTGRES_HOST=iris-db
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=iris_db
+      - POSTGRES_USER=iris
+      - POSTGRES_PASSWORD=iris_db_password_change_me
+      - CELERY_BROKER=amqp://iris:iris_rabbitmq_password@iris-rabbitmq:5672
+    volumes:
+      - iris-app-data:/home/iris/server_data
+    depends_on:
+      - iris-db
+      - iris-rabbitmq
+    networks:
+      - iris-network
+
+volumes:
+  iris-app-data:
+  iris-certificates:
+  iris-db-data:
+
+networks:
+  iris-network:
+    driver: bridge

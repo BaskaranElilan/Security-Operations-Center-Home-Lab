@@ -1,0 +1,60 @@
+# =========================
+# SOC Home Lab - .gitignore
+# =========================
+
+# --- Credentials & Secrets ---
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+.env
+.env.*
+secrets/
+api_keys.txt
+**/passwords.txt
+
+# --- Wazuh ---
+**/ossec.log
+**/ossec-alerts*
+**/alerts.json
+**/archives.json
+**/client.keys
+
+# --- Docker ---
+docker-compose.override.yml
+**/data/
+**/volumes/
+
+# --- Logs ---
+*.log
+logs/
+
+# --- OS Files ---
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+*.swo
+*~
+
+# --- IDE ---
+.vscode/
+.idea/
+*.code-workspace
+
+# --- Terraform State (if added later) ---
+*.tfstate
+*.tfstate.backup
+.terraform/
+
+# --- Python ---
+__pycache__/
+*.pyc
+venv/
+
+# --- Temporary ---
+tmp/
+temp/
+*.tmp
+report_text.txt
