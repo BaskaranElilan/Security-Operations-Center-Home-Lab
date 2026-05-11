@@ -32,8 +32,8 @@ The lab replicates enterprise-grade SOC capabilities — including **SIEM**, **S
 
 > **🎓 Academic Project**  
 > BSc (Hons) Cyber Security & Digital Forensics — Kingston University  
-> **Author:** Baskaran Elilan (E264017 / 2528298)  
-> **Supervisor:** Mr. Bhimaja C. Goonatillaka
+> **Author:** Baskaran Elilan  
+
 
 ---
 
@@ -43,43 +43,43 @@ The lab replicates enterprise-grade SOC capabilities — including **SIEM**, **S
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────┐
-│                        MICROSOFT AZURE CLOUD                           │
+│                        MICROSOFT AZURE CLOUD                            │
 ├─────────────────────────────────────────────────────────────────────────┤
 │                                                                         │
 │  ┌─── Security Tools Subnet ─────────────────────────────────────────┐  │
-│  │                                                                    │  │
-│  │  ┌──────────────┐  ┌──────────┐  ┌───────────┐  ┌─────────────┐  │  │
+│  │                                                                   │  │
+│  │  ┌───────────────┐  ┌──────────┐  ┌───────────┐  ┌─────────────┐  │  │
 │  │  │   Wazuh       │  │  MISP    │  │ The Hive  │  │  DFIR-IRIS  │  │  │
 │  │  │ Server Stack  │  │ Threat   │  │ Incident  │  │  Forensics  │  │  │
 │  │  │ (Indexer +    │  │ Intel    │  │ Response  │  │  & Case     │  │  │
 │  │  │  Manager +    │  │ Platform │  │ Platform  │  │  Management │  │  │
 │  │  │  Dashboard)   │  │          │  │           │  │             │  │  │
-│  │  └──────┬───────┘  └────┬─────┘  └─────┬─────┘  └──────┬──────┘  │  │
+│  │  └──────┬────────┘  └────┬─────┘  └─────┬─────┘  └──────┬──────┘  │  │
 │  │         │               │               │               │         │  │
-│  │  ┌──────┴───────┐  ┌────┴─────┐  ┌─────┴─────┐                   │  │
-│  │  │  Suricata    │  │ Shuffle  │  │ Prometheus│                   │  │
-│  │  │  NIDS        │  │ SOAR     │  │ Metrics   │                   │  │
-│  │  └──────────────┘  └────┬─────┘  └─────┬─────┘                   │  │
+│  │  ┌──────┴───────┐  ┌────┴─────┐  ┌─────┴─────┐                    │  │
+│  │  │  Suricata    │  │ Shuffle  │  │ Prometheus│                    │  │
+│  │  │  NIDS        │  │ SOAR     │  │ Metrics   │                    │  │
+│  │  └──────────────┘  └────┬─────┘  └─────┬─────┘                    │  │
 │  │                         │               │                         │  │
 │  │                    ┌────┴───────────────┴────┐                    │  │
-│  │                    │       Grafana            │                    │  │
-│  │                    │    Visualization         │                    │  │
+│  │                    │       Grafana            │                   │  │
+│  │                    │    Visualization         │                   │  │
 │  │                    └─────────────────────────┘                    │  │
-│  └────────────────────────────────────────────────────────────────────┘  │
+│  └───────────────────────────────────────────────────────────────────┘  │
 │                                                                         │
-│  ┌─── Endpoint Subnet ────────────┐  ┌─── Attack Subnet ────────────┐  │
-│  │                                 │  │                               │  │
-│  │  ┌─────────────┐ ┌───────────┐ │  │  ┌───────────────────────┐   │  │
-│  │  │ Windows     │ │ Ubuntu    │ │  │  │     Kali Linux        │   │  │
-│  │  │ Server 2022 │ │ Server   │ │  │  │   Attack Simulation   │   │  │
-│  │  │ (Agent)     │ │ (Agent)  │ │  │  │        VM             │   │  │
-│  │  └─────────────┘ └───────────┘ │  │  └───────────────────────┘   │  │
-│  └─────────────────────────────────┘  └───────────────────────────────┘  │
+│  ┌─── Endpoint Subnet ────────────┐  ┌─── Attack Subnet ────────────┐   │
+│  │                                │  │                              │   │
+│  │  ┌─────────────┐ ┌───────────┐ │  │  ┌───────────────────────┐   │   │
+│  │  │ Windows     │ │ Ubuntu    │ │  │  │     Kali Linux        │   │   │
+│  │  │ Server 2022 │ │ Server    │ │  │  │   Attack Simulation   │   │   │
+│  │  │ (Agent)     │ │ (Agent)   │ │  │  │        VM             │   │   │
+│  │  └─────────────┘ └───────────┘ │  │  └───────────────────────┘   │   │
+│  └────────────────────────────────┘  └──────────────────────────────┘   │
 │                                                                         │
-│                    ┌──────────────────────────────┐                      │
-│                    │  🔔 Slack / Discord / Telegram │                     │
-│                    │     Real-time Notifications    │                     │
-│                    └──────────────────────────────┘                      │
+│                    ┌──────────────────────────────┐                     │
+│                    │🔔 Slack / Discord / Telegram │                     │
+│                    │     Real-time Notifications  │                     │
+│                    └──────────────────────────────┘                     │
 └─────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -426,9 +426,6 @@ Security-Operations-Center-Home-Lab/
 **Baskaran Elilan**  
 BSc (Hons) Cyber Security & Digital Forensics  
 Kingston University — Faculty of Science, Engineering and Computing  
-
-- 📧 Student ID: E264017 / 2528298  
-- 👨‍🏫 Supervisor: Mr. Bhimaja C. Goonatillaka
 
 ---
 
